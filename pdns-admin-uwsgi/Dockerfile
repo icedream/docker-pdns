@@ -10,8 +10,11 @@ RUN dnf -y --setopt=tsflags=nodocs install \
     uwsgi-plugin-python \
   && dnf clean all
 
+ARG PDNSADMIN_VERSION=master
+ARG PDNSADMIN_URL="https://github.com/ngoduykhanh/PowerDNS-Admin/archive/${PDNSADMIN_VERSION}.tar.gz"
+
 RUN mkdir -p /opt/powerdns-admin \
-  && curl -sSLk https://git.omicroninteractive.com/0x97/powerdns-admin/repository/archive.tar.gz?ref=master \
+  && curl -sSLk "${PDNSADMIN_URL}" \
     | tar -xzC /opt/powerdns-admin --strip 1 \
   && sed -i '/MySQL-python/d' /opt/powerdns-admin/requirements.txt \
   && sed -i '/python-ldap/d' /opt/powerdns-admin/requirements.txt \
